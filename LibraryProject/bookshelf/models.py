@@ -8,7 +8,8 @@ class Book(models.Model):
     publication_year=models.IntegerField()
 
 def __str__(self):
-    return self.title
+    return f"{self.title} by {self.author} ({self.publication_year})"
+
 def get_author(self):
     return self.author
 def get_publication_year     (self):
