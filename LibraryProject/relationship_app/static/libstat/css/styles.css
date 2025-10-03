@@ -1,0 +1,21 @@
+body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 2rem;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        nav a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: #0077cc;
+        }
+        .highlight {
+            background-color: #e0f7fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }

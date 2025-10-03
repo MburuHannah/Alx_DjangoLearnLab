@@ -1,12 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import Book
 from django.views.generic import ListView
 from .models import Book, Author, Library, Librarian
 from django.views.generic.detail import DetailView
+from django.contrib.auth.forms import UserCreationForm
 
 
 
 # Create your views here.
+def home(request):
+    return render(request, 'relationship/home.html')
 
 def Books(request):
     books=Book.objects.all()
@@ -23,4 +26,13 @@ class LibraryDetailView(DetailView):
         context['books']=self.object.books.all()
         return context
     
-    
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request,'registration/register.html' , {'form' :form})
+
