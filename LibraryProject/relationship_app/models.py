@@ -15,3 +15,16 @@ class Library(models.Model):
 class Librarian(models.Model):
     name=models.CharField(max_length=100)
     library=models.OneToOneField(Library, related_name='librarian', on_delete=models.CASCADE)
+
+class UserProfile(models.Model):
+    ROLE_CHOICES=[
+        ('admin','Admin'),
+        ('member','Member'),    
+        ('Librarian','librarian')
+    ]
+    user=models.OneToOneField('auth.User', on_delete=models.CASCADE)
+    role=models.CharField(max_length=50)
+ 
+    def __str__(self):
+        return f"{self.user.username} - {self.role}"
+    
