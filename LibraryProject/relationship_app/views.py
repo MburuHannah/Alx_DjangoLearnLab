@@ -4,8 +4,11 @@ from django.views.generic import ListView
 from .models import Book, Author, Library, Librarian
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test,permission_required
 from .models import UserProfile
+from .forms import BookForm
+from django.shortcuts import get_object_or_404
+
 
 
 # Create your views here.
@@ -56,4 +59,32 @@ def is_member(user):
 def member_view(request):
     return render(request, 'relationship/member_view.html')
 
+
+@permission_required('relationship_app.add_book')
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('books')
+    else:
+        form = BookForm()   
+    return render(request, 'relationship/book_form.html', {'form': form})    
+def edit_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('books')
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'books/edit_book.html', {'form': form, 'book': book})
+
+def delete_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('books')
+    return render(request, 'books/delete_book.html', {'book': book})
 

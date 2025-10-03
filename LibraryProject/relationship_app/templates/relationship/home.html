@@ -1,18 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to the Bookclub Library</title>
-    <link rel= "stylesheet" href="{
-     % static,' libstat/css/styles.css'%}">
-
+    <title>{% block title %}Welcome to the Bookclub Library{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'libstat/css/styles.css' %}">
 </head>
 <body>
+    {% block content %}
     <header>
         <h1>📚 Welcome to the Bookclub Library</h1>
         <p>Explore, connect, and grow through stories that inspire.</p>
         <nav>
-            <a href="{% url 'library-list' %}">View Libraries</a>
+            <a href="{% url 'library-detail' library.pk %}">View Libraries</a>
             <a href="{% url 'register' %}">Register</a>
             <a href="{% url 'login' %}">Login</a>
         </nav>
@@ -23,5 +23,6 @@
         <p>“Books are the quietest and most constant of friends.” — Charles W. Eliot</p>
         <p>Whether you're here to learn, lead, or simply find your next favorite read, we're glad you're here.</p>
     </section>
+    {% endblock %}
 </body>
 </html>
