@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- fixed this line -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">   
+    <title>Books</title>
+</head> 
+<body>
+    <h1>All Available Books</h1>
+
+    {% if Books %}
+        <ul>
+            {% for book in Books %}
+                <li>{{ book.title }} by {{ book.author.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books are currently available. Please check back later!</p>
+    {% endif %}
+</body>
+</html>
