@@ -1,5 +1,5 @@
 from django import forms
-from .models import Book
+from .models import Book, User
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -10,3 +10,6 @@ class BookForm(forms.ModelForm):
             'author': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
         }
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
