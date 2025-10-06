@@ -12,7 +12,12 @@
         <h1>📚 Welcome to the Bookclub Library</h1>
         <p>Explore, connect, and grow through stories that inspire.</p>
         <nav>
-            <a href="{% url 'library-detail' library.pk %}">View Libraries</a>
+           {% if library %}
+    <a href="{% url 'library-detail' library.pk %}">View Libraries</a>
+{% else %}
+    <span>No library available</span>
+{% endif %}
+
             <a href="{% url 'register' %}">Register</a>
             <a href="{% url 'login' %}">Login</a>
         </nav>

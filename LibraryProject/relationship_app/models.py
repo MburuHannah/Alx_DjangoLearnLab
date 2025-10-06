@@ -53,8 +53,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
     favorite_genre = models.CharField(max_length=50, blank=True)
     spiritual_quote = models.TextField(blank=True)
-    joined_bookclub = models.DateField(auto_now_add=True)
-
+    
     def __str__(self):
         return f"{self.user.username}'s profile"
         
@@ -65,9 +64,11 @@ class Book(models.Model):
 
     class Meta:
         permissions = [
+            ('can_view_book', 'Can view book'),
             ('can_add_book', 'Can add book'),
             ('can_change_book', 'Can change book'),
             ('can_delete_book', 'Can delete book'),
+            ('can_edit', 'Can_edit_book'),
         ]
 
     def __str__(self):
@@ -86,4 +87,4 @@ class Librarian(models.Model):
     library = models.OneToOneField(Library, related_name='librarian', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.name        

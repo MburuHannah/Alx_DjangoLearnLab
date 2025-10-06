@@ -6,8 +6,10 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import user_passes_test,permission_required
 from .models import UserProfile
-from .forms import BookForm
+from .forms import BookForm,CustomUserCreationForm
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import permission_required
+from .models import Book
 
 
 
@@ -32,13 +34,13 @@ class LibraryDetailView(DetailView):
     
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')
     else:
-        form = UserCreationForm()
-    return render(request,'registration/register.html' , {'form' :form})
+        form = CustomUserCreationForm()
+    return render(request,'relationship/register.html' , {'form' :form})
 def is_admin(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'admin'    
 
@@ -70,6 +72,8 @@ def add_book(request):
     else:
         form = BookForm()   
     return render(request, 'relationship/book_form.html', {'form': form})    
+
+@permission_required('relationship_app.edit_book')
 def edit_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
@@ -80,7 +84,7 @@ def edit_book(request, pk):
     else:
         form = BookForm(instance=book)
     return render(request, 'books/edit_book.html', {'form': form, 'book': book})
-
+@permission_required('relationship_app.delete_book')
 def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
@@ -88,3 +92,20 @@ def delete_book(request, pk):
         return redirect('books')
     return render(request, 'books/delete_book.html', {'book': book})
 
+@permission_required('relationship_app.view_book')
+def view_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    return render(request, 'relationship/view_book.html', {'book': book})
+
+@permission_required('relationship_app.create_book')
+def create_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('books')
+    else:
+        form = BookForm()
+    return render(request, 'relationship/book_form.html', {'form': form})
+
+   

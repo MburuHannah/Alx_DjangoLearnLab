@@ -23,10 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include ('relationship_app.urls')),
     path('accounts/',include ('django.contrib.auth.urls')),
-    path('accounts/login', auth_views.LoginView.as_view(), name ='login'),
-    path('accounts/logout/',auth_views.LogoutView.as_view(),name='logout'),
-    path('accounts/password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
-    path('accounts/password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
+    path('accounts/login', auth_views.LoginView.as_view(template_name='relationship/login.html'), name ='login'),
+    path('accounts/logout/',auth_views.LogoutView.as_view(template_name='relationship/logout.html'),name='logout'),
+    path('accounts/password_change/', auth_views.PasswordChangeView.as_view(template_name='relationship/password_change.html'), name='password_change'),
+    path('accounts/password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='relationship/password_change_done.html'), name='password_change_done'),
 
     # Password reset (for forgotten passwords)
     path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
