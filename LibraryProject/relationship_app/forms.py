@@ -19,3 +19,8 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'role', 'date_of_birth', 'profile_photo']
+        
+
+class BookSearchForm(forms.Form):
+    title=forms.CharField(max_length=100, required=False)
+    

@@ -10,6 +10,7 @@ from .forms import BookForm,CustomUserCreationForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from django.http import HttpResponse
 
 
 
@@ -62,7 +63,7 @@ def member_view(request):
     return render(request, 'relationship/member_view.html')
 
 
-@permission_required('relationship_app.add_book')
+@permission_required('relationship_app.can_add_book')
 def add_book(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
@@ -73,7 +74,7 @@ def add_book(request):
         form = BookForm()   
     return render(request, 'relationship/book_form.html', {'form': form})    
 
-@permission_required('relationship_app.edit_book')
+@permission_required('relationship_app.can_edit_book')
 def edit_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
@@ -84,7 +85,7 @@ def edit_book(request, pk):
     else:
         form = BookForm(instance=book)
     return render(request, 'books/edit_book.html', {'form': form, 'book': book})
-@permission_required('relationship_app.delete_book')
+@permission_required('relationship_app.can_delete_book')
 def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
@@ -92,20 +93,27 @@ def delete_book(request, pk):
         return redirect('books')
     return render(request, 'books/delete_book.html', {'book': book})
 
-@permission_required('relationship_app.view_book')
+@permission_required('relationship_app.can_view_book')
 def view_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     return render(request, 'relationship/view_book.html', {'book': book})
 
-@permission_required('relationship_app.create_book')
-def create_book(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('books')
-    else:
-        form = BookForm()
-    return render(request, 'relationship/book_form.html', {'form': form})
+
+def secure_view(request):
+    response = HttpResponse("This is secure content.")
+    response['Content-Security-Policy'] = "default-src 'self'; script-src 'self' https://trusted.cdn.com"
+    return response
+
+from .forms import BookSearchForm
+from .models import Book
+
+def search_books(request):
+    form = BookSearchForm(request.GET)
+    if form.is_valid():
+        title = form.cleaned_data['title']
+        books = Book.objects.filter(title__icontains=title)
+        return render(request, 'bookshelf/book_list.html', {'books': books})
+
+    
 
    

@@ -132,3 +132,58 @@ EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 AUTH_USER_MODEL='relationship_app.CustomUser'
 MEDIA_URL='/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+ALLOWED_HOSTS = ['localhost','127`.0.0.1']
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+# Browser-side protections
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# HTTPS-only cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Optional: force HTTPS redirect
+SECURE_SSL_REDIRECT = True  # Only if your site uses HTTPS
+
+INSTALLED_APPS += ['csp']
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'default-src': ("'self'",),
+        'script-src': ("'self'", 'https://trusted.cdn.com'),
+        'style-src': ("'self'", 'https://trusted.cdn.com'),
+    }
+}
+
+
+# Enforce HTTPS redirects
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # One year in seconds
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow site to be preloaded in browsers
+
+# Secure cookies over HTTPS only
+SESSION_COOKIE_SECURE = True  # Session cookies sent only over HTTPS
+CSRF_COOKIE_SECURE = True  # CSRF tokens sent only over HTTPS
+
+
+# Prevent clickjacking
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent MIME-type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser XSS protection
+SECURE_BROWSER_XSS_FILTER = True
+
+
+
+
+
